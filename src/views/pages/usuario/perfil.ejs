@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <%- include('../../partials/head') %>
+
+<body class="bg-light">
+
+  <%- include('../../partials/header') %>
+
+  <div class="d-flex">
+    <%- include('../../partials/sidebar') %>
+
+    <div class="content">
+      <form action="/usuario/atualizar" method="post">
+            <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                    <label for="nome">Nome</label>
+                    <input type="text" class="form-control" id="nome" value="<%=usuario.nome%>">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" value="<%=usuario.email%>">
+                </div>
+            </div>
+      </form>
+    </div>
+  </div>
+
+  <%- include('../../partials/scripts') %>
+</body>
+</html>
