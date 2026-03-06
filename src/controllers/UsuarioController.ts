@@ -97,7 +97,8 @@ export class UsuarioController {
         (req.session as any).usuario = {
             nome: usuario.nome,
             email: usuario.email,
-            id: usuario.id
+            id: usuario.id,
+            tipo: usuario.tipo
         }
 
         return res.redirect('/dashboard');
@@ -123,7 +124,11 @@ export class UsuarioController {
             return res.redirect('/usuario/logar');
         }
 
-        res.render('pages/usuario/perfil', { usuario: usuarioEncontrado, titulo: 'Perfil' });
+        res.render('pages/usuario/perfil', { 
+            usuario: usuarioEncontrado, 
+            titulo: 'Perfil',
+            mensagem: null 
+        });
     }
 
     static async atualizarPerfil(req: Request, res: Response) {
@@ -131,12 +136,12 @@ export class UsuarioController {
         const { nome, email, senha } = req.body;
 
         const usuarioEncontrado = await Usuario.buscarPorId(usuario.id);
-        
-        if(!usuarioEncontrado) {
+
+        if (!usuarioEncontrado) {
             return res.redirect('/usuario/logar');
         }
 
-        if(!nome || !email || !senha) {
+        if (!nome || !email || !senha) {
             return res.render('pages/usuario/perfil', {
                 usuario: usuarioEncontrado,
                 titulo: 'Perfil',
@@ -147,5 +152,28 @@ export class UsuarioController {
                 }
             });
         }
+
+        usuarioEncontrado.nome = nome;
+        usuarioEncontrado.email = email;
+        usuarioEncontrado.senha = senha;
+
+        await Usuario.atualizar(usuarioEncontrado);
+
+        (req.session as any).usuario = {
+            nome: usuarioEncontrado.nome,
+            email: usuarioEncontrado.email,
+            id: usuarioEncontrado.id,
+            tipo: usuarioEncontrado.tipo
+        }
+
+        return res.render('pages/usuario/perfil', {
+            usuario: usuarioEncontrado,
+            titulo: 'Perfil',
+            mensagem: {
+                tipo: 'success',
+                valor: 'Perfil salvo com sucesso!',
+                titulo: 'Perfil salvo'
+            }
+        });
     }
 } 
