@@ -20,8 +20,17 @@ export class UsuarioController {
         });
     }
     //função que carrega a página de listagem de usuários
-    static carregarListar(req: Request, res: Response) {
-        res.render('listar_usuario');
+    static async carregarListar(req: Request, res: Response) {
+        const { usuario } =  req.session as any;
+
+        const usuarios = await Usuario.buscarTodos();
+
+        res.render('pages/usuario/listar', {
+            mensagem: null,
+            usuarios,
+            usuario,
+            titulo: 'Listar Usuários'
+        });
     }
 
     //Parte 2 -> funções do CRUD

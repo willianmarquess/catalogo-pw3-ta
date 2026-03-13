@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<%- include('../../partials/head') %>
+
+  <body class="bg-light">
+
+    <%- include('../../partials/header') %>
+
+      <div class="d-flex">
+        <%- include('../../partials/sidebar') %>
+
+          <div class="content">
+            <table class="table">
+                <thead>
+                    <tr>
+                       <th scope="col">#</th> 
+                       <th scope="col">Nome</th> 
+                       <th scope="col">Email</th> 
+                       <th scope="col">Tipo</th> 
+                       <th scope="col">Ações</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <% usuarios.forEach((usuario, i) => { %>
+                            <tr>
+                                <td>
+                                    <%= i+1 %>
+                                </td>
+                                <td>
+                                    <%= usuario.nome %>
+                                </td>
+                                <td>
+                                    <%= usuario.email %>
+                                </td>
+                                <td>
+                                    <%= usuario.tipo %>
+                                </td>
+                                <td>
+                                    N/A
+                                </td>
+                            </tr>
+                  <%  })  %>
+                </tbody>
+            </table>
+          </div>
+      </div>
+
+      <%- include('../../partials/scripts') %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <% if (mensagem) { %>
+
+          <script>
+            Swal.fire({
+              icon: '<%= mensagem.tipo %>',
+              text: '<%= mensagem.valor %>'
+            });
+          </script>
+
+          <% } %>
+  </body>
+
+</html>
