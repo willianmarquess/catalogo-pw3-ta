@@ -35,8 +35,13 @@
                                 <td>
                                     <%= usuario.tipo %>
                                 </td>
-                                <td>
-                                    N/A
+                                <td class="d-flex gap-2">
+                                    <form action="/usuario/editar/<%=usuario.id%>" method="get">
+                                      <button type="submit" class="btn btn-primary">Editar</button>
+                                    </form>
+                                    <form action="/usuario/excluir/<%=usuario.id%>" method="post">
+                                      <button type="submit" class="btn btn-danger">Excluir</button>
+                                    </form>
                                 </td>
                             </tr>
                   <%  })  %>
