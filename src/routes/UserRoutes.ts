@@ -13,6 +13,8 @@ userRoutes.post('/usuario/deslogar', UsuarioController.deslogar);
 userRoutes.get('/usuario/perfil', authMiddleware, UsuarioController.carregarPerfil);
 userRoutes.post('/usuario/perfil', authMiddleware, UsuarioController.atualizarPerfil);
 userRoutes.get('/usuario/listar', authMiddleware, UsuarioController.carregarListar);
+userRoutes.post('/usuario/excluir/:id', authMiddleware, UsuarioController.excluir);
+userRoutes.get('/usuario/editar/:id', authMiddleware, UsuarioController.carregarEditar);
 
 export {
     userRoutes

@@ -185,4 +185,27 @@ export class UsuarioController {
             }
         });
     }
+
+    static async excluir(req: Request, res: Response) {
+        const { id } = req.params;
+        await Usuario.deletarPorId(id);
+        res.redirect('../listar');
+    }
+
+    static async carregarEditar(req: Request, res: Response) {
+        const { id } = req.params;
+
+        const usuarioEncontrado = await Usuario.buscarPorId(id);
+
+        if(!usuarioEncontrado) {
+            //TODO: criar página de não encontrado
+            return res.render('');
+        }
+
+        return res.render('pages/usuario/editar', {
+            usuario: usuarioEncontrado,
+            titulo: 'Editar Usuário',
+            mensagem: null
+        });
+    }
 } 
