@@ -44,3 +44,6 @@ CREATE TABLE comentario (
   foi_deletado  boolean NOT NULL DEFAULT false,
   criado_em  TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+INSERT INTO usuario (nome, email, senha, tipo) 
+VALUES ('Ze Admin', 'zeadmin@example.com', '123', 'ADMIN');
