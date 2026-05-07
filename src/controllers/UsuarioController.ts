@@ -193,6 +193,7 @@ export class UsuarioController {
     }
 
     static async carregarEditar(req: Request, res: Response) {
+        const { usuario } = req.session as any;
         const { id } = req.params;
 
         const usuarioEncontrado = await Usuario.buscarPorId(id);
@@ -203,7 +204,8 @@ export class UsuarioController {
         }
 
         return res.render('pages/usuario/editar', {
-            usuario: usuarioEncontrado,
+            usuario,
+            usuarioParaEditar: usuarioEncontrado,
             titulo: 'Editar Usuário',
             mensagem: null
         });

@@ -14,21 +14,24 @@
               <div class="row">
                 <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
                   <label for="nome">Nome</label>
-                  <input name="nome" type="text" class="form-control" id="nome" value="<%=usuario.nome%>">
+                  <input name="nome" type="text" class="form-control" id="nome" value="<%=usuarioParaEditar.nome%>">
                 </div>
               </div>
 
               <div class="row">
                 <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
                   <label for="email">Email</label>
-                  <input name="email" type="email" class="form-control" id="email" value="<%=usuario.email%>">
+                  <input name="email" type="email" class="form-control" id="email" value="<%=usuarioParaEditar.email%>">
                 </div>
               </div>
 
               <div class="row">
                 <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
-                  <label for="senha">Senha</label>
-                  <input name="senha" type="password" class="form-control" id="senha" value="<%=usuario.senha%>">
+                  <label for="tipo">Tipo</label>
+                  <select name="tipo" id="tipo" class="form-control">
+                    <option value="ADMIN" <%= usuarioParaEditar.tipo == 'ADMIN' ? 'selected' : '' %> >ADMIN</option>
+                    <option value="USUARIO" <%= usuarioParaEditar.tipo == 'USUARIO' ? 'selected' : '' %> >USUARIO</option>
+                  </select>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary mt-1">Salvar</button>
