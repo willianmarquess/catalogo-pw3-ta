@@ -10,42 +10,43 @@
         <%- include('../../partials/sidebar') %>
 
           <div class="content">
+            <h1>Listar</h1>
             <table class="table">
-                <thead>
-                    <tr>
-                       <th scope="col">#</th> 
-                       <th scope="col">Nome</th> 
-                       <th scope="col">Email</th> 
-                       <th scope="col">Tipo</th> 
-                       <th scope="col">Ações</th> 
-                    </tr>
-                </thead>
-                <tbody>
-                    <% usuarios.forEach((usuario, i) => { %>
-                            <tr>
-                                <td>
-                                    <%= i+1 %>
-                                </td>
-                                <td>
-                                    <%= usuario.nome %>
-                                </td>
-                                <td>
-                                    <%= usuario.email %>
-                                </td>
-                                <td>
-                                    <%= usuario.tipo %>
-                                </td>
-                                <td class="d-flex gap-2">
-                                    <form action="/usuario/editar/<%=usuario.id%>" method="get">
-                                      <button type="submit" class="btn btn-primary">Editar</button>
-                                    </form>
-                                    <form class="form-excluir" action="/usuario/excluir/<%=usuario.id%>" method="post">
-                                      <button type="submit" class="btn btn-danger">Excluir</button>
-                                    </form>
-                                </td>
-                            </tr>
-                  <%  })  %>
-                </tbody>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Tipo</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% usuarios.forEach((usuario, i)=> { %>
+                  <tr>
+                    <td>
+                      <%= i+1 %>
+                    </td>
+                    <td>
+                      <%= usuario.nome %>
+                    </td>
+                    <td>
+                      <%= usuario.email %>
+                    </td>
+                    <td>
+                      <%= usuario.tipo.nome %>
+                    </td>
+                    <td class="d-flex gap-2">
+                      <form action="/usuario/editar/<%=usuario.id%>" method="get">
+                        <button type="submit" class="btn btn-primary">Editar</button>
+                      </form>
+                      <form class="form-excluir" action="/usuario/excluir/<%=usuario.id%>" method="post">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                      </form>
+                    </td>
+                  </tr>
+                  <% }) %>
+              </tbody>
             </table>
           </div>
       </div>
@@ -54,9 +55,8 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
           const formsExcluir = document.getElementsByClassName('form-excluir');
-          
-          for(const formulario of formsExcluir) {
-            formulario.addEventListener('submit', (e) => {
+          for (const formExcluir of formsExcluir) {
+            formExcluir.addEventListener('submit', (e) => {
               e.preventDefault();
               Swal.fire({
                 title: 'Deseja realmente excluir?',
@@ -65,14 +65,15 @@
                 confirmButtonText: 'Sim',
                 cancelButtonText: 'Cancelar'
               }).then((result) => {
-                if(result.isConfirmed) {
-                  formulario.submit();
+                if (result.isConfirmed) {
+                  formExcluir.submit();
                 }
               });
             });
           }
-
         </script>
+
+
         <% if (mensagem) { %>
 
           <script>

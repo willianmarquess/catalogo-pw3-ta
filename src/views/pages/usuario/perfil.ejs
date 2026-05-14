@@ -10,25 +10,26 @@
         <%- include('../../partials/sidebar') %>
 
           <div class="content">
+            <h1>Perfil</h1>
             <form action="/usuario/perfil" method="post">
               <div class="row">
                 <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
                   <label for="nome">Nome</label>
-                  <input name="nome" type="text" class="form-control" id="nome" value="<%=usuario.nome%>">
+                  <input class="form-control" type="text" name="nome" id="nome" value="<%= usuarioPerfil.nome %>">
                 </div>
               </div>
 
               <div class="row">
                 <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
                   <label for="email">Email</label>
-                  <input name="email" type="email" class="form-control" id="email" value="<%=usuario.email%>">
+                  <input class="form-control" type="email" name="email" id="email" value="<%= usuarioPerfil.email %>">
                 </div>
               </div>
 
               <div class="row">
                 <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
                   <label for="senha">Senha</label>
-                  <input name="senha" type="password" class="form-control" id="senha" value="<%=usuario.senha%>">
+                  <input class="form-control" type="password" name="senha" id="senha" value="<%= usuarioPerfil.senha %>">
                 </div>
               </div>
               <button type="submit" class="btn btn-primary mt-1">Salvar</button>

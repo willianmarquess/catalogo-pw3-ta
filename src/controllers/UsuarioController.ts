@@ -1,16 +1,8 @@
-// Controle
-// 1. receber as requições HTTP
-// 2. validar dados
-// 3. validar regras de negócio
-// 4. comunicar com a camada MODEL
-
 import { Request, Response } from "express";
 import { Usuario } from "../models/Usuario";
-import { TipoUsuario } from "../enums/TipoUsuario";
+import { TipoUsuario } from "../models/TipoUsuario";
+import { TipoUsuarioEnum } from "../enums/TipoUsuario";
 
-//Parte 1 -> funções que carregam páginas
-
-//função que carrega a página de login
 
 export class UsuarioController {
 
@@ -19,21 +11,19 @@ export class UsuarioController {
             mensagem: null
         });
     }
-    //função que carrega a página de listagem de usuários
+
     static async carregarListar(req: Request, res: Response) {
-        const { usuario } =  req.session as any;
+        const { usuario } = req.session as any;
 
         const usuarios = await Usuario.buscarTodos();
 
         res.render('pages/usuario/listar', {
-            mensagem: null,
-            usuarios,
             usuario,
-            titulo: 'Listar Usuários'
+            usuarios,
+            titulo: 'Listar Usuários',
+            mensagem: null
         });
     }
-
-    //Parte 2 -> funções do CRUD
 
     static async cadastrar(req: Request, res: Response) {
         const { nome, email, senha } = req.body;
@@ -60,11 +50,22 @@ export class UsuarioController {
             });
         }
 
+        const tipoPadrao = await TipoUsuario.buscarPorNome(TipoUsuarioEnum.USUARIO);
+        if (!tipoPadrao) {
+            return res.render('login', {
+                mensagem: {
+                    tipo: 'error',
+                    valor: 'Tipo de usuário padrão não encontrado',
+                    titulo: 'Erro do sistema'
+                }
+            });
+        }
+
         const usuario: Usuario = new Usuario({
             nome,
             email,
             senha,
-            tipo: TipoUsuario.USUARIO
+            tipo: tipoPadrao
         });
 
         await Usuario.cadastrar(usuario);
@@ -107,7 +108,7 @@ export class UsuarioController {
             nome: usuario.nome,
             email: usuario.email,
             id: usuario.id,
-            tipo: usuario.tipo
+            tipo: usuario.tipo.nome
         }
 
         return res.redirect('/dashboard');
@@ -133,10 +134,11 @@ export class UsuarioController {
             return res.redirect('/usuario/logar');
         }
 
-        res.render('pages/usuario/perfil', { 
-            usuario: usuarioEncontrado, 
+        res.render('pages/usuario/perfil', {
+            usuario,
+            usuarioPerfil: usuarioEncontrado,
             titulo: 'Perfil',
-            mensagem: null 
+            mensagem: null
         });
     }
 
@@ -172,7 +174,7 @@ export class UsuarioController {
             nome: usuarioEncontrado.nome,
             email: usuarioEncontrado.email,
             id: usuarioEncontrado.id,
-            tipo: usuarioEncontrado.tipo
+            tipo: usuarioEncontrado.tipo.nome
         }
 
         return res.render('pages/usuario/perfil', {
@@ -180,8 +182,8 @@ export class UsuarioController {
             titulo: 'Perfil',
             mensagem: {
                 tipo: 'success',
-                valor: 'Perfil salvo com sucesso!',
-                titulo: 'Perfil salvo'
+                valor: 'Perfil atualizado com sucesso!',
+                titulo: 'Sucesso'
             }
         });
     }
@@ -193,21 +195,136 @@ export class UsuarioController {
     }
 
     static async carregarEditar(req: Request, res: Response) {
-        const { usuario } = req.session as any;
         const { id } = req.params;
+        const { usuario } = req.session as any;
 
         const usuarioEncontrado = await Usuario.buscarPorId(id);
 
         if(!usuarioEncontrado) {
-            //TODO: criar página de não encontrado
-            return res.render('');
+            throw new Error('Usuário não encontrado');
         }
 
         return res.render('pages/usuario/editar', {
-            usuario,
-            usuarioParaEditar: usuarioEncontrado,
             titulo: 'Editar Usuário',
-            mensagem: null
+            mensagem: null,
+            usuarioParaEditar: usuarioEncontrado,
+            usuario
+        });
+    }
+
+    static async carregarCadastrar(req: Request, res: Response) {
+        const { usuario } = req.session as any;
+
+        return res.render('pages/usuario/cadastrar', {
+            titulo: 'Cadastrar Usuário',
+            mensagem: null,
+            usuario
+        });
+    }
+
+    static async cadastrarInterno(req: Request, res: Response) {
+        const { nome, email, senha, tipo } = req.body;
+        const { usuario } = req.session as any;
+
+        if (!nome || !email || !senha || !tipo) {
+            return res.render('pages/usuario/cadastrar', {
+                titulo: 'Cadastrar Usuário',
+                mensagem: {
+                    tipo: 'error',
+                    valor: 'Preencha todos os campos corretamente',
+                    titulo: 'Dados inválidos'
+                },
+                usuario
+            });
+        }
+
+        const usuarioEncontrado = await Usuario.buscarPorEmail(email);
+
+        if (usuarioEncontrado) {
+            return res.render('pages/usuario/cadastrar', {
+                titulo: 'Cadastrar Usuário',
+                mensagem: {
+                    tipo: 'error',
+                    valor: 'E-mail já existe',
+                    titulo: 'Dados inválidos'
+                },
+                usuario
+            });
+        }
+
+        const tipoSelecionado = await TipoUsuario.buscarPorNome(tipo);
+        if (!tipoSelecionado) {
+            return res.render('pages/usuario/cadastrar', {
+                titulo: 'Cadastrar Usuário',
+                mensagem: {
+                    tipo: 'error',
+                    valor: 'Tipo de usuário inválido',
+                    titulo: 'Erro'
+                },
+                usuario
+            });
+        }
+
+        const novoUsuario: Usuario = new Usuario({
+            nome,
+            email,
+            senha,
+            tipo: tipoSelecionado
+        });
+
+        await Usuario.cadastrar(novoUsuario);
+
+        return res.render('pages/usuario/cadastrar', {
+            titulo: 'Cadastrar Usuário',
+            mensagem: {
+                tipo: 'success',
+                valor: 'Usuário cadastrado com sucesso!',
+                titulo: 'Sucesso'
+            },
+            usuario
+        });
+    }
+
+    static async editar(req: Request, res: Response) {
+        const { id } = req.params;
+        const { nome, email, tipo } = req.body;
+        const { usuario } = req.session as any;
+
+        const usuarioEncontrado = await Usuario.buscarPorId(id);
+
+        if(!usuarioEncontrado) {
+            throw new Error('Usuário não encontrado');
+        }
+
+        const tipoSelecionado = await TipoUsuario.buscarPorNome(tipo);
+        if (!tipoSelecionado) {
+            return res.render('pages/usuario/editar', {
+                titulo: 'Editar Usuário',
+                mensagem: {
+                    tipo: 'error',
+                    valor: 'Tipo de usuário inválido',
+                    titulo: 'Erro'
+                },
+                usuarioParaEditar: usuarioEncontrado,
+                usuario
+            });
+        }
+
+        usuarioEncontrado.nome = nome;
+        usuarioEncontrado.email = email;
+        usuarioEncontrado.tipo = tipoSelecionado;
+
+        await Usuario.atualizar(usuarioEncontrado);
+
+        return res.render('pages/usuario/editar', {
+            titulo: 'Editar Usuário',
+            mensagem: {
+                tipo: 'success',
+                valor: 'Dados salvos com sucesso!',
+                titulo: 'Dados do usuário'
+            },
+            usuarioParaEditar: usuarioEncontrado,
+            usuario
         });
     }
 } 
