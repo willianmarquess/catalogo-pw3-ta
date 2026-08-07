@@ -4,6 +4,7 @@ import { dashboardRoutes } from './routes/DashboardRoutes';
 import session from 'express-session';
 import { connection } from './infra/Connection';
 import dotenv from 'dotenv';
+import { categoriaRoutes } from './routes/CategoriaRoutes';
 
 // Carrega as variáveis de ambiente
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(session({
 }));
 app.use(usuarioRoutes);
 app.use(dashboardRoutes);
+app.use(categoriaRoutes);
 
 connection.connect()
     .then(() => { 
