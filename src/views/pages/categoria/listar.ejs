@@ -16,31 +16,23 @@
                 <tr>
                   <th>#</th>
                   <th>Nome</th>
-                  <th>Email</th>
-                  <th>Tipo</th>
                   <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
-                <% usuarios.forEach((usuario, i)=> { %>
+                <% categorias.forEach((categoria, i)=> { %>
                   <tr>
                     <td>
                       <%= i+1 %>
                     </td>
                     <td>
-                      <%= usuario.nome %>
-                    </td>
-                    <td>
-                      <%= usuario.email %>
-                    </td>
-                    <td>
-                      <%= usuario.tipo.nome %>
+                      <%= categoria.nome %>
                     </td>
                     <td class="d-flex gap-2">
-                      <form action="/usuario/editar/<%=usuario.id%>" method="get">
+                      <form action="/categoria/editar/<%=categoria.id%>" method="get">
                         <button type="submit" class="btn btn-primary">Editar</button>
                       </form>
-                      <form class="form-excluir" action="/usuario/excluir/<%=usuario.id%>" method="post">
+                      <form class="form-excluir" action="/categoria/excluir/<%=categoria.id%>" method="post">
                         <button type="submit" class="btn btn-danger">Excluir</button>
                       </form>
                     </td>

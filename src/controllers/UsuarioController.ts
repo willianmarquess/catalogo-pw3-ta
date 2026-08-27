@@ -13,12 +13,9 @@ export class UsuarioController {
     }
 
     static async carregarListar(req: Request, res: Response) {
-        const { usuario } = req.session as any;
-
         const usuarios = await Usuario.buscarTodos();
 
         res.render('pages/usuario/listar', {
-            usuario,
             usuarios,
             titulo: 'Listar Usuários',
             mensagem: null
@@ -120,11 +117,6 @@ export class UsuarioController {
         });
     }
 
-    static carregarUsuarios(req: Request, res: Response) {
-        const { usuario } = req.session as any;
-        res.render('usuarios', { usuario });
-    }
-
     static async carregarPerfil(req: Request, res: Response) {
         const { usuario } = req.session as any;
 
@@ -135,7 +127,6 @@ export class UsuarioController {
         }
 
         res.render('pages/usuario/perfil', {
-            usuario,
             usuarioPerfil: usuarioEncontrado,
             titulo: 'Perfil',
             mensagem: null
@@ -196,7 +187,6 @@ export class UsuarioController {
 
     static async carregarEditar(req: Request, res: Response) {
         const { id } = req.params;
-        const { usuario } = req.session as any;
 
         const usuarioEncontrado = await Usuario.buscarPorId(id);
 
@@ -208,23 +198,18 @@ export class UsuarioController {
             titulo: 'Editar Usuário',
             mensagem: null,
             usuarioParaEditar: usuarioEncontrado,
-            usuario
         });
     }
 
     static async carregarCadastrar(req: Request, res: Response) {
-        const { usuario } = req.session as any;
-
         return res.render('pages/usuario/cadastrar', {
             titulo: 'Cadastrar Usuário',
-            mensagem: null,
-            usuario
+            mensagem: null
         });
     }
 
     static async cadastrarInterno(req: Request, res: Response) {
         const { nome, email, senha, tipo } = req.body;
-        const { usuario } = req.session as any;
 
         if (!nome || !email || !senha || !tipo) {
             return res.render('pages/usuario/cadastrar', {
@@ -234,7 +219,6 @@ export class UsuarioController {
                     valor: 'Preencha todos os campos corretamente',
                     titulo: 'Dados inválidos'
                 },
-                usuario
             });
         }
 
@@ -248,7 +232,6 @@ export class UsuarioController {
                     valor: 'E-mail já existe',
                     titulo: 'Dados inválidos'
                 },
-                usuario
             });
         }
 
@@ -261,7 +244,6 @@ export class UsuarioController {
                     valor: 'Tipo de usuário inválido',
                     titulo: 'Erro'
                 },
-                usuario
             });
         }
 
@@ -281,14 +263,12 @@ export class UsuarioController {
                 valor: 'Usuário cadastrado com sucesso!',
                 titulo: 'Sucesso'
             },
-            usuario
         });
     }
 
     static async editar(req: Request, res: Response) {
         const { id } = req.params;
         const { nome, email, tipo } = req.body;
-        const { usuario } = req.session as any;
 
         const usuarioEncontrado = await Usuario.buscarPorId(id);
 
@@ -306,7 +286,6 @@ export class UsuarioController {
                     titulo: 'Erro'
                 },
                 usuarioParaEditar: usuarioEncontrado,
-                usuario
             });
         }
 
@@ -324,7 +303,6 @@ export class UsuarioController {
                 titulo: 'Dados do usuário'
             },
             usuarioParaEditar: usuarioEncontrado,
-            usuario
         });
     }
 } 

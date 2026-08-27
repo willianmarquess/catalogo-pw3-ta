@@ -3,23 +3,18 @@ import { Categoria } from "../models/Categoria";
 
 export class CategoriaController {
     static carregarCadastrar(req: Request, res: Response) {
-        const { usuario } = req.session as any;
-
         return res.render('pages/categoria/cadastrar', {
             titulo: 'Cadastrar Categoria',
-            mensagem: null,
-            usuario
+            mensagem: null
         });
     }
 
     static async cadastrar(req: Request, res: Response) {
-        const { usuario } = req.session as any;
         const { nome } = req.body;
 
         if (!nome) {
             return res.render('pages/categoria/cadastrar', {
                 titulo: 'Cadastrar Categoria',
-                usuario,
                 mensagem: {
                     tipo: 'error',
                     valor: 'Preencha todos os campos corretamente',
@@ -36,12 +31,21 @@ export class CategoriaController {
 
         return res.render('pages/categoria/cadastrar', {
             titulo: 'Cadastrar Categoria',
-            usuario,
             mensagem: {
                 tipo: 'success',
                 valor: 'Categoria cadastrada com sucesso!',
                 titulo: 'Sucesso'
             }
+        });
+    }
+
+    static async carregarListar(req: Request, res: Response) {
+        const categorias = await Categoria.buscarTodos();
+
+        res.render('pages/categoria/listar', {
+            categorias,
+            titulo: 'Listar Usuários',
+            mensagem: null
         });
     }
 }

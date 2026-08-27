@@ -8,6 +8,8 @@ export function authMiddleware(tiposPermitidos: string[] = []) {
             return res.redirect('/dashboard');
         }
 
+        res.locals.usuario = req.session?.usuario || null;
+
         return next();
     }
 }

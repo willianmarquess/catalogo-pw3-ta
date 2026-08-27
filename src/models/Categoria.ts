@@ -15,4 +15,12 @@ export class Categoria {
             [categoria.nome]
         );
     }
+
+    static async buscarTodos() {
+            const { rows } = await connection.query(`select * from categoria;`);
+            return rows.map((row) => new Categoria({
+                id: row.id,
+                nome: row.nome
+            }));
+        }
 }
