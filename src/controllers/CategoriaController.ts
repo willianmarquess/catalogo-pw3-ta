@@ -48,4 +48,25 @@ export class CategoriaController {
             mensagem: null
         });
     }
+
+    static async excluir(req: Request, res: Response) {
+        const { id } = req.params;
+        await Categoria.deletarPorId(id);
+        res.redirect('../listar');
+    }
+
+    static async carregarEditar(req: Request, res: Response) {
+        const { id } = req.params;
+        const categoria = await Categoria.buscarPorId(id);
+
+        if (!categoria) {
+            throw new Error(`Categoria com o id ${id} não existe`);
+        }
+
+        return res.render('pages/categoria/editar', {
+            categoria,
+            titulo: 'Editar Categoria',
+            mensagem: null
+        });
+    }
 }

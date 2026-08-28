@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<%- include('../../partials/head') %>
+
+  <body class="bg-light">
+
+    <%- include('../../partials/header') %>
+
+      <div class="d-flex">
+        <%- include('../../partials/sidebar') %>
+
+          <div class="content">
+            <h1><%= titulo %></h1>
+            <form action="/categoria/editar" method="post">
+              <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                  <label for="nome">Nome</label>
+                  <input value="<%=categoria.nome%>" class="form-control" type="text" name="nome" id="nome" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-1">Salvar</button>
+              <a href="/categoria/listar" class="btn btn-secondary mt-1">Voltar</a>
+            </form>
+          </div>
+      </div>
+
+      <%- include('../../partials/scripts') %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <% if (mensagem) { %>
+
+          <script>
+            Swal.fire({
+              backdrop: false,
+              icon: '<%= mensagem.tipo %>',
+              text: '<%= mensagem.valor %>'
+            });
+          </script>
+
+          <% } %>
+  </body>
+
+</html>
