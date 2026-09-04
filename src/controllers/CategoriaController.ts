@@ -69,4 +69,29 @@ export class CategoriaController {
             mensagem: null
         });
     }
+
+    static async atualizar(req: Request, res: Response) {
+        const { nome } = req.body;
+        const { id } = req.params;
+
+        const categoria = await Categoria.buscarPorId(id);
+
+        if (!categoria) {
+            throw new Error('Categoria não encontrada');
+        }
+
+        categoria.nome = nome;
+
+        await Categoria.atualizar(categoria);
+
+        return res.render('pages/categoria/editar', {
+            categoria,
+            titulo: 'Editar Categoria',
+            mensagem: {
+                tipo: 'success',
+                valor: 'Categoria salva com sucesso!',
+                titulo: 'Sucesso'
+            }
+        });
+    }
 }

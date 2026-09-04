@@ -30,14 +30,21 @@ export class Categoria {
 
     static async buscarPorId(id: string) {
         const { rows } = await connection.query('SELECT * FROM categoria WHERE id=$1', [id]);
-        
+
         if (rows.length <= 0) {
             return null;
         }
-        
+
         return new Categoria({
             id: rows[0].id,
             nome: rows[0].nome
         });
+    }
+
+    static async atualizar(categoria: Categoria) {
+        await connection.query('UPDATE categoria SET nome=$1 WHERE id=$2;', [
+            categoria.nome,
+            categoria.id
+        ]);
     }
 }

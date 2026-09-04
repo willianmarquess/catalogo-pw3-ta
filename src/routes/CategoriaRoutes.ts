@@ -10,6 +10,7 @@ categoriaRoutes.post('/categoria/cadastrar', authMiddleware(['ADMIN']), asyncExe
 categoriaRoutes.get('/categoria/listar', authMiddleware(['ADMIN']), asyncExecutor(CategoriaController.carregarListar));
 categoriaRoutes.post('/categoria/excluir/:id', authMiddleware(['ADMIN']), asyncExecutor(CategoriaController.excluir));
 categoriaRoutes.get('/categoria/editar/:id', authMiddleware(['ADMIN']), asyncExecutor(CategoriaController.carregarEditar));
+categoriaRoutes.post('/categoria/editar/:id', authMiddleware(['ADMIN']), asyncExecutor(CategoriaController.atualizar));
 
 export {
     categoriaRoutes
