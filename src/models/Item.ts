@@ -25,6 +25,6 @@ export class Item {
         criadoEm: string;
         aprovadoPor?: number;
     }) {
-
+        
     }
 }
