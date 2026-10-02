@@ -145,7 +145,7 @@ export class UsuarioController {
 
         if (!nome || !email || !senha) {
             return res.render('pages/usuario/perfil', {
-                usuario: usuarioEncontrado,
+                usuarioPerfil: usuarioEncontrado,
                 titulo: 'Perfil',
                 mensagem: {
                     tipo: 'error',
@@ -161,15 +161,8 @@ export class UsuarioController {
 
         await Usuario.atualizar(usuarioEncontrado);
 
-        (req.session as any).usuario = {
-            nome: usuarioEncontrado.nome,
-            email: usuarioEncontrado.email,
-            id: usuarioEncontrado.id,
-            tipo: usuarioEncontrado.tipo.nome
-        }
-
         return res.render('pages/usuario/perfil', {
-            usuario: usuarioEncontrado,
+            usuarioPerfil: usuarioEncontrado,
             titulo: 'Perfil',
             mensagem: {
                 tipo: 'success',

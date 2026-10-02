@@ -6,3 +6,7 @@ import { ItemController } from "../controllers/ItemController";
 const itemRoutes = Router();
 
 itemRoutes.get('/item/cadastrar', authMiddleware(['USUARIO', 'ADMIN']), asyncExecutor(ItemController.carregarCadastrar));
+
+export {
+    itemRoutes
+}

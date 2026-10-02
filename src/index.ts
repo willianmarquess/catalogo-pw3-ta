@@ -5,6 +5,7 @@ import session from 'express-session';
 import { connection } from './infra/Connection';
 import dotenv from 'dotenv';
 import { categoriaRoutes } from './routes/CategoriaRoutes';
+import { itemRoutes } from './routes/ItemRoutes';
 
 // Carrega as variáveis de ambiente
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(session({
 app.use(usuarioRoutes);
 app.use(dashboardRoutes);
 app.use(categoriaRoutes);
+app.use(itemRoutes);
 
 connection.connect()
     .then(() => { 

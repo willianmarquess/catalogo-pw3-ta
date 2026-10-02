@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<%- include('../../partials/head') %>
+
+  <body class="bg-light">
+
+    <%- include('../../partials/header') %>
+
+      <div class="d-flex">
+        <%- include('../../partials/sidebar') %>
+
+          <div class="content">
+            <h1><%= titulo %></h1>
+            <form action="/item/cadastrar" method="post">
+
+                <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                  <label for="tipo">Tipo</label>
+                  <select class="form-control" name="tipo" id="tipo" required>
+                    <% tiposItem.forEach(tipo => { %>
+                        <option value="<%= tipo %>">
+                            <%= tipo %>
+                        </option>
+                  <%  }) %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                  <label for="titulo">Título</label>
+                  <input class="form-control" type="text" name="titulo" id="titulo" required>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                  <label for="sinopse">Sinopse</label>
+                  <textarea class="form-control" name="sinopse" id="sinopse" rows="5"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                  <label for="dataLancamento">Data de Lançamento</label>
+                  <input class="form-control" type="date" name="dataLancamento" id="dataLancamento">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group mb-3 col-lg-6 col-md-8 col-12">
+                  <label for="imagem">Imagem de Capa</label>
+                  <input class="form-control" type="file" name="imagem" id="imagem" accept="image/*">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary mt-1">Cadastrar</button>
+              <a href="/usuario/listar" class="btn btn-secondary mt-1">Voltar</a>
+            </form>
+          </div>
+      </div>
+
+      <%- include('../../partials/scripts') %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <% if (mensagem) { %>
+
+          <script>
+            Swal.fire({
+              backdrop: false,
+              icon: '<%= mensagem.tipo %>',
+              text: '<%= mensagem.valor %>'
+            });
+          </script>
+
+          <% } %>
+  </body>
+
+</html>
